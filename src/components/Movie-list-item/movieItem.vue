@@ -1,10 +1,13 @@
 <template>
         <li class="list-group-item d-flex justify-content-between"
                 :class="[{ like: movie.like }, { favourite: movie.favourite }]">
-                <span class="list-group-item-label" @click='onLike'> {{ movie.name }} </span>
+                <span class="list-group-item-label" @click="$emit('onToggle', { id: movie.id, prop: 'like' })"> {{
+                        movie.name
+                }} </span>
                 <input type="number" class="list-group-item-input" v-bind:value="movie.views" />
                 <div class="d-flex justify-content-center align-items-center gap-2">
-                        <button type="button" class="btn-cookie btn-sm rounded border-0 btn-dark">
+                        <button type="button" class="btn-cookie btn-sm rounded border-0 btn-dark"
+                                @click="$emit('onToggle', { id: movie.id, prop: 'favourite' })">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                         class="bi bi-database-fill-check" viewBox="0 0 16 16">
                                         <path
@@ -33,9 +36,12 @@ export default {
                 }
         },
         methods: {
-                onLike() {
+                onToggle() {
                         this.$emit("onLike", this.movie.id)
-                }
+                },
+                // onFavourite() {
+                //         this.$emit("onFavourite", this.movie.id)
+                // }
         },
 };
 </script>

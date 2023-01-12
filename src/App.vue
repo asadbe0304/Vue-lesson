@@ -6,7 +6,7 @@
                 <Search />
                 <AppFilter />
             </div>
-            <MovieList :movies="movies" @onLike="onClickHandler" />
+            <MovieList :movies="movies" @onToggle="onToggleHandler" />
             <MovieAdd @createMovie="createMovie" />
             <!-- <h1>Hello world</h1> -->
             <!-- <h2>{{ counter }}</h2> -->
@@ -75,18 +75,27 @@ export default {
         createMovie(item) {
             this.movies.push(item)
         },
-        onClickHandler(id) {
-            const item = this.movies.map(c => {
-                if (c.id == id) {
-                    c.like = !c.like
+        onToggleHandler({ id, prop }) {
+            this.movies = this.movies.map(item => {
+                if (item.id == id) {
+                    return { ...item, [prop]: !item[prop] }
                 }
-                return c
+                return item
             })
             console.log(item);
         },
-    }
-
+        // onFavouriteHandler(id) {
+        //     const item = this.movies.map(c => {
+        //         if (c.id == id) {
+        //             c.favourite = !c.favourite
+        //         }
+        //         return c
+        //     })
+        // console.log(item);
+        // }
+    },
 }
+
 </script>
 <style scoped>
 .app {
