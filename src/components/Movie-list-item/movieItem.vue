@@ -35,14 +35,7 @@ export default {
                         required: true,
                 }
         },
-        methods: {
-                onToggle() {
-                        this.$emit("onLike", this.movie.id)
-                },
-                // onFavourite() {
-                //         this.$emit("onFavourite", this.movie.id)
-                // }
-        },
+
 };
 </script>
 <style scoped>
