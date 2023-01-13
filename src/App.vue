@@ -3,10 +3,11 @@
         <div class="content">
             <AppInfo :allMoviesCount="movies.length" :favouriteMovie="movies.filter(c => c.favourite).length" />
             <div class=" search-panel">
-                <Search />
-                <AppFilter />
+                <Search :updateHandler="updateHandler" />
+                <AppFilter :updateFilterHandler="updateFilterHandler" :filterName="filter"/>
             </div>
-            <MovieList :movies="movies" @onToggle="onToggleHandler" />
+            <MovieList :movies="onFilterHandler(onSearchHandler(movies, term), filter)" @onToggle="onToggleHandler"
+                @onRemove="onRemoveHandler" />
             <MovieAdd @createMovie="createMovie" />
             <!-- <h1>Hello world</h1> -->
             <!-- <h2>{{ counter }}</h2> -->
@@ -56,6 +57,8 @@ export default {
                     id: 3,
                 },
             ],
+            term: '',
+            filter: '',
         }
     },
     // data() {
@@ -82,8 +85,32 @@ export default {
                 }
                 return item
             })
-            console.log(item);
         },
+        onRemoveHandler(id) {
+            this.movies = this.movies.filter(c => c.id !== id)
+        },
+        onSearchHandler(arr, term) {
+            if (term.length == 0) {
+                return arr
+            }
+            return arr.filter(c => c.name.toLowerCase().indexOf(term) > -1)
+        },
+        onFilterHandler(arr, filter) {
+            switch (filter) {
+                case 'popular':
+                    return arr.filter(c => c.like)
+                case 'Viewers':
+                    return arr.filter(c => c.views > 500)
+                default:
+                    return arr
+            }
+        },
+        updateHandler(term) {
+            this.term = term
+        },
+        updateFilterHandler(filter) {
+            this.filter = filter
+        }
         // onFavouriteHandler(id) {
         //     const item = this.movies.map(c => {
         //         if (c.id == id) {
